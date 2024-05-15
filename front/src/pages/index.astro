@@ -1,0 +1,23 @@
+---
+import Tasks from "../components/tasks.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <header>
+    <h1>Tareas</h1>
+
+    <a href="/create"><button>Crear Tarea</button></a>
+  </header>
+
+  <div>
+    <Tasks />
+  </div>
+</Layout>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

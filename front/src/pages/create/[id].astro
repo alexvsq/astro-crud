@@ -1,0 +1,62 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { updateTask, getOneTask } from "../../api/api.js";
+import DeleteBtn from "../../components/btnDelete";
+
+const { id } = Astro.params;
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const task = {
+      title: data.get("title"),
+      description: data.get("description"),
+      done: 0,
+    };
+    const res = await updateTask(task, id);
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const oneTask = await getOneTask(id);
+console.log(oneTask);
+---
+
+<Layout title="crear tarea">
+  <header>
+    <h1>Editar Tarea</h1>
+    <a href="/"><button>Inicio</button></a>
+  </header>
+
+  <h3>Tarea</h3>
+  {
+    oneTask.map((x) => {
+      return (
+        <article>
+          <h4>{x.title}</h4>
+          <p>
+            <i>{x.description}</i>
+          </p>
+          <small>Hecho : {x.done === 1 ? "✅" : "❌"}</small>
+        </article>
+      );
+    })
+  }
+
+  <DeleteBtn id={id} client:load />
+
+  <form method="POST">
+    <input type="text" name="title" placeholder="Titulo" required />
+    <input type="text" name="description" placeholder="Descripcion" required />
+    <button>Crear</button>
+  </form>
+</Layout>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

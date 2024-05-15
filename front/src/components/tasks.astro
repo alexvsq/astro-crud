@@ -1,0 +1,37 @@
+---
+import { getTasks } from "../api/api.js";
+
+const data = await getTasks();
+---
+
+<h3>Lista de Tareas</h3>
+<div>
+  {
+    data.map((x) => {
+      return (
+        <article>
+          <h4>{x.title}</h4>
+          <p>
+            <i>{x.description}</i>
+          </p>
+          <small>Hecho : {x.done === 1 ? "✅" : "❌"}</small>
+          <small>Id : {x.id}</small>
+
+          <a href={"/create/" + x.id}>
+            <button>editar</button>
+          </a>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  div {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  article {
+    margin: 15px;
+  }
+</style>

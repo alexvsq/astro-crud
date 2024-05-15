@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { createTask } from "../api/api.js";
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const task = {
+      title: data.get("title"),
+      description: data.get("description"),
+      done: 0,
+    };
+    const res = await createTask(task);
+  } catch (error) {
+    console.log(error);
+  }
+}
+---
+
+<Layout title="crear tarea">
+  <header>
+    <h1>Crear Nueva Tarea</h1>
+    <a href="/"><button>Inicio</button></a>
+  </header>
+
+  <form method="POST">
+    <input type="text" name="title" placeholder="Titulo" required />
+    <input type="text" name="description" placeholder="Descripcion" required />
+    <button>Crear</button>
+  </form>
+</Layout>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
